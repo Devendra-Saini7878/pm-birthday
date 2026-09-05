@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  password  String
+  role      String   @default("STATE_ADMIN")
+  state     String?
+  campId    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Citizen {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  fatherName    String?
+  dob           String?
+  gender        String
+  mobileNumber  String
+  aadhaarNumber String?
+  address       String
+  cityVillage   String?
+  state         String
+  district      String
+  pinCode       String?
+  incomeVariant String?
+  campId        String
+  schemes       String
+  qrCodeId      String   @unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model AppSetting {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+model Camp {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  campId           String   @unique
+  campName         String
+  state            String
+  district         String
+  coordinatorName  String   @default("")
+  coordinatorMobile String  @default("")
+  status           String   @default("ACTIVE")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model ContactMessage {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String   @default("")
+  mobile    String   @default("")
+  issueType String   @default("Other")
+  message   String
+  createdAt DateTime @default(now())
+}

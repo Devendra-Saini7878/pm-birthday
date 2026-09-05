@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bjp-saffron: #FF6600;
+  --color-bjp-deep-saffron: #E65C00;
+  --color-bjp-dark-blue: #003366;
+  --color-bjp-green: #138808;
+  --color-bjp-gold: #FFB347;
+  --color-bjp-light-bg: #FFF8F0;
+  --color-bjp-dark-text: #1A1A2E;
+  --font-sans: 'Inter', system-ui, sans-serif;
+}
+
+@layer base {
+  :root {
+    --background: #FFF8F0;
+    --foreground: #1A1A2E;
+  }
+  .dark {
+    --background: #0F172A;
+    --foreground: #E2E8F0;
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+  }
+}
+
+/* Utility Classes */
+.input-gov {
+  @apply w-full px-4 py-3 rounded-xl border border-orange-200 focus:outline-none focus:ring-2 focus:ring-bjp-saffron focus:border-transparent transition-all shadow-sm bg-white;
+}
+.label-gov {
+  @apply block text-sm font-bold text-slate-700 mb-1.5;
+}
+.btn-saffron {
+  @apply bg-bjp-saffron hover:bg-bjp-deep-saffron text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all active:scale-95 hover:scale-105 flex items-center justify-center gap-2;
+}
+.btn-outline {
+  @apply border-2 border-bjp-saffron text-bjp-saffron hover:bg-bjp-saffron hover:text-white font-bold py-3 px-6 rounded-full transition-all flex items-center justify-center gap-2;
+}
+.card-gov {
+  @apply bg-white rounded-2xl shadow-md border border-orange-100 hover:shadow-xl transition-shadow;
+}
+
+/* Dark mode support */
+.dark .input-gov { @apply bg-slate-800 border-slate-600 text-white; }
+.dark .label-gov { @apply text-slate-300; }
+.dark .card-gov { @apply bg-slate-800 border-slate-700; }
+
+/* Skeleton animation */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 0.5rem;
+}
+
+/* Toast */
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+.toast-enter { animation: slideInRight 0.3s ease-out; }
+
+/* Scroll to top */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in-up { animation: fadeInUp 0.3s ease-out; }
