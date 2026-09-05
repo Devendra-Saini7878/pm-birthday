@@ -118,7 +118,25 @@ app.get('/api/schemes', (req, res) => {
 app.post('/api/admin/login', async (req, res) => {
   const { email, password } = req.body;
   try {
-    const admin = await prisma.admin.findUnique({ where: { email } });
+    let admin = await prisma.admin.findUnique({ where: { email } });
+
+    // Auto-seed: if no admins exist at all, create the default superadmin
+    if (!admin) {
+      const adminCount = await prisma.admin.count();
+      if (adminCount === 0 && email === 'superadmin@gov.in' && password === 'admin123') {
+        const hashedPassword = await bcrypt.hash('admin123', 10);
+        admin = await prisma.admin.create({
+          data: {
+            email: 'superadmin@gov.in',
+            password: hashedPassword,
+            role: 'SUPER_ADMIN',
+            name: 'Super Admin',
+          }
+        });
+        console.log('Auto-seeded default superadmin account.');
+      }
+    }
+
     if (!admin) return res.status(401).json({ error: 'Invalid credentials' });
     const validPassword = await bcrypt.compare(password, admin.password);
     if (!validPassword) return res.status(401).json({ error: 'Invalid credentials' });
